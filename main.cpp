@@ -187,6 +187,7 @@ Node * read_dbase ( char* filename ) { //-------------------Чтение базы из файла
          while ( !read_fine( f, data ) ) // Последующие нарушения
             search_insert( root, data, INSERT, dir, parent );
      }
+
      return root;
 }
 // -----------------------------------------Чтение из файла информации о нарушении
