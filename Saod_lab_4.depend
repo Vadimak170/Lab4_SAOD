@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1520398830 source:c:\users\Вадим\documents\saod_lab_4\main.cpp
+1522555089 source:c:\users\Вадим\documents\saod_lab_4\main.cpp
 	<fstream>
 	<cstdlib>
 	<cstring>

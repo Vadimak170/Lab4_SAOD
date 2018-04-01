@@ -10,10 +10,11 @@ using namespace std;
 char* filename = "dbase.txt";
 enum Action { INSERT, DEL, INFO };
 enum Dir { LEFT, RIGHT };
-const int l_time = 20, l_type = 40, l_number = 12;
+const int l_time = 20, l_type = 40, l_number = 12, l_marka=20;
 struct Fine {//---------------Штраф (элемент списка)
 char time[l_time];//Время нарушения
 char type[l_type];//Вид нарушения
+char marka[l_marka];
 float price;//Размер штрафа
 Fine* next;//Указатель на следующий элемент
 };
@@ -28,6 +29,7 @@ Node* right;//Указатель на правое поддерево
 struct Data {//-----------------Исходные данные
 char number[l_number];//Номер автомобиля
 char time[l_time];//Время нарушения
+char marka[l_marka];
 char type[l_type];//Вид нарушения
 float price;//Размер штрафа
 };
@@ -111,6 +113,7 @@ Node* first( Data data ) {// -------------Формирование корневого элемента дерева
    Fine* beg = new Fine;
    strncpy( beg->time,data.time, l_time );
    strncpy( beg->type,data.type, l_type );
+   strncpy(beg->marka,data.marka,l_marka);
    beg->price= data.price;
    beg->next= 0;// Создание первого узла дерева:
    Node* root = new Node;
@@ -134,9 +137,11 @@ Data input( Action action ) { // ---------------------------------Ввод нарушения
    cin.get();
    if ( action == DEL ) return data;
        cout << "Введите тип нарушения type" << endl; cin.getline( data.type, l_type );
+       cout << "Введите марку автомобиля" << endl; cin.getline( data.marka, l_marka );
    do { cout << "Введите размер штрафа:" << endl; cin >> buf;
    }while ( !( data.price = ( float )atof( buf ) ) );
    cin.get();
+
    return data;
 }
 
@@ -153,6 +158,7 @@ int menu() {// -------------------------------------------Вывод меню
 
 void print_node( const Node& node ) { // --------Вывод на экран сведений об а/м cout << "Номер а/м: " << node.number << endl;
    Fine* pf = node.beg; float summa = 0;
+   cout<<"Марка автомобиля:"<<pf->marka<<endl;
    while ( pf ) {
       cout << "Вид нарушения: " << pf->type<< endl; cout << "Дата и время: " <<pf->time;
       cout << " Размер штрафа: " << pf->price<< endl; summa +=pf->price;
@@ -195,6 +201,7 @@ int read_fine( ifstream &f, Data& data ) {
    f.getline( data.time, l_time );
    if( data.time[0] == '=' ) return 1;// Конец списка нарушений
    f.getline( data.type, l_type );
+   f.getline(data.marka,l_marka);
    f >> data.price;
    f.get();
    return 0; // Нарушение считано успешно
@@ -262,6 +269,7 @@ Node* search_insert( Node* root, const Data& data, Action action,
    Fine* pf = new Fine;
    strncpy( pf->time,data.time, l_time );
    strncpy( pf->type,data.type, l_type );
+   strncpy(pf->marka,data.marka,l_marka);
    pf->price= data.price;
    pf->next= 0;
    if ( !found ) { // Создание нового узла:
@@ -290,7 +298,7 @@ void write_node( ofstream &f, const Node& node ) { // - Вывод в файл сведений об
    f << node.number << endl;
    Fine* pf= node.beg;
    while( pf ) {
-      f <<pf->time<< endl <<pf->type<< endl <<pf->price<< endl;
+      f <<pf->time<< endl <<pf->type<< endl<<pf->marka<<endl <<pf->price<< endl;
       pf = pf->next;
    }
    f << "="<< endl;// Признак окончания сведений об а/м
