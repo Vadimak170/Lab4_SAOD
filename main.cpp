@@ -6,7 +6,7 @@
 #include <iostream>
 #include <clocale>
 using namespace std;
-
+const int password=4352;
 char* filename = "dbase.txt";
 enum Action { INSERT, DEL, INFO };
 enum Dir { LEFT, RIGHT };
@@ -58,7 +58,7 @@ int main() { //-----------------------------Главная функция--------------------
 	Node* root = read_dbase( filename );
 	ofstream fout;
 	Dir dir;
-	while ( true ) {
+	g:while ( true ) {
 		switch ( menu() ) {
 			case 1:// Ввод сведений о нарушении
 				if ( !root ) root = first( input( INSERT ) );
@@ -88,7 +88,7 @@ int main() { //-----------------------------Главная функция--------------------
 				}
  				write_dbase( fout, root );
  				return 0;
-			case 5: {Node *temp=root; print_all(temp);break;}			// Отладка
+			case 5: {cout<<"Введите пароль:";int temp; cin>>temp; if (temp==password) {cout<<"Успешная авторизация!"<<endl;Node *temp=root; print_all(temp);break;}else{cout<<"Неверный пароль!"<<endl;goto g;} }			// Отладка
 			default: cout << " Надо вводить число от 1 до 5" << endl; break;
 		}
 	}
