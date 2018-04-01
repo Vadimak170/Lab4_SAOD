@@ -50,6 +50,7 @@ Node* remove_tree( Node* p );
 Node* search_insert( Node* root, const Data& data, Action action, Dir& dir, Node*& parent );
 void write_dbase( ofstream &f, const Node* root );
 void write_node( ofstream &f, const Node& node );
+void print_all(Node* root);
 
 int main() { //-----------------------------Главная функция--------------------
 	setlocale(LC_ALL, "Russian");
@@ -87,12 +88,19 @@ int main() { //-----------------------------Главная функция--------------------
 				}
  				write_dbase( fout, root );
  				return 0;
-			case 5: print_dbase( root ); break;			// Отладка
-			default: cout << " Надо вводить число от 1 до 4" << endl; break;
+			case 5: {Node *temp=root; print_all(temp);break;}			// Отладка
+			default: cout << " Надо вводить число от 1 до 5" << endl; break;
 		}
 	}
 }
-
+void print_all(Node* temp){
+      if ( temp ) { cout<<"Number:"<<temp->number<<endl;
+        print_node( *temp );
+        cout<<endl;
+        print_all(temp->left);
+        print_all(temp->right);}
+        //print_dbase(p);
+}
 Node* descent( Node* p ) {// -----------------------------Спуск по дереву
 Node* prev, *y = p->right;
 if ( !y->left)
@@ -149,7 +157,7 @@ int menu() {// -------------------------------------------Вывод меню
    char buf[10];
    int option;
    do { cout << "==================================" << endl; cout << "1 - Ввод сведений о нарушении" << endl; cout << "2 - Ввод сведений об оплате штрафа" << endl; cout << "3 - Справка" << endl;
-      cout << "4 - Выход" << endl;
+      cout << "4 - Выход" << endl; cout<<"5 - Просмотр всей доступной базы"<<endl;
       cout << "==================================" << endl; cin >> buf; option = atoi( buf );
    } while ( !option );
    cin.get();
